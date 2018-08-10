@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.RobotsDao">
+
+	<!-- 添加机器人(应用)表 -->
+	<insert id="insert" parameterType="com.yls.projects.robot.entity.Robots">
+		insert into robots (id, id_ac, cname,
+		nname, intrade, iconurl,
+		access_way, appid, secret,
+		state, sort, remarks,
+		create_by, create_date, update_by,
+		update_date, del_flag)
+		values (#{id,jdbcType=VARCHAR}, #{idAc,jdbcType=VARCHAR},
+		#{cname,jdbcType=VARCHAR},
+		#{nname,jdbcType=VARCHAR}, #{intrade,jdbcType=VARCHAR}, #{iconurl,jdbcType=VARCHAR},
+		#{accessWay,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR},
+		#{secret,jdbcType=VARCHAR},
+		#{state,jdbcType=CHAR}, #{sort,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR},
+		#{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+		#{updateBy,jdbcType=VARCHAR},
+		#{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR})
+	</insert>
+
+	<!-- 更新机器人(应用)表 -->
+	<update id="update" parameterType="com.yls.projects.robot.entity.Robots">
+		update robots
+		<set>
+			<if test="idAc != null">
+				id_ac = #{idAc,jdbcType=VARCHAR},
+			</if>
+			<if test="cname != null">
+				cname = #{cname,jdbcType=VARCHAR},
+			</if>
+			<if test="nname != null">
+				nname = #{nname,jdbcType=VARCHAR},
+			</if>
+			<if test="intrade != null">
+				intrade = #{intrade,jdbcType=VARCHAR},
+			</if>
+			<if test="iconurl != null">
+				iconurl = #{iconurl,jdbcType=VARCHAR},
+			</if>
+			<if test="accessWay != null">
+				access_way = #{accessWay,jdbcType=VARCHAR},
+			</if>
+			<if test="appid != null">
+				appid = #{appid,jdbcType=VARCHAR},
+			</if>
+			<if test="secret != null">
+				secret = #{secret,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=CHAR},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 根据账号ID查询列表 -->
+	<select id="getListByIdAc" resultType="com.yls.projects.robot.entity.Robots"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select a.*, b.cid_m as cidM from robots a, robots_module b where a.id =
+		b.cid and b.iscommon = '1' and a.del_flag = '0' and a.id_ac = #{idAc}
+		<choose>
+			<when test="cname != null and cname != ''">
+				and a.cname LIKE concat('%',#{cname},'%')
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		limit #{startIndex},#{size}
+	</select>
+
+	<!-- 获取总数 -->
+	<select id="getCount" resultType="java.lang.Integer"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select count(a.id) from robots a, robots_module b where a.id = b.cid and
+		b.iscommon = '1' and a.del_flag = '0' and a.id_ac = #{idAc}
+		<choose>
+			<when test="cname != null and cname != ''">
+				and a.cname LIKE concat('%',#{cname},'%')
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 根据账号ID查询列表 -->
+	<select id="getEntityById" resultType="com.yls.projects.robot.entity.Robots"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select * from robots a where a.del_flag = '0' and a.id = #{cid}
+	</select>
+	
+	<!-- 模块ID查询-->
+	<select id="getEntityByIdM" resultType="com.yls.projects.robot.entity.Robots"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select a.* 
+		from robots a, robots_module b
+		where a.id = b.cid and a.del_flag = '0' and b.cid_m = #{idM}
+	</select>
+	
+	<!-- 根据id删除固定对话,软删除 -->
+	<update id="delRobotById" parameterType="java.lang.String">
+	  	update robots set del_flag = '1' where id = #{id}
+	</update>
+	
+	<select id="getCountByRobotName" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.entity.Robots">
+    	select count(id) from robots where id_ac = #{idAc}
+    		and cname = #{cname} and del_flag = '0'
+    		<if test="id != null and id != ''">
+    		and id  &lt;&gt; #{id}
+    	</if>
+    </select>
+</mapper>

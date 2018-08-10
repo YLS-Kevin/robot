@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.WordsDao" >
+	<!-- 添加数据 -->
+    <insert id="insert" parameterType="com.yls.projects.robot.entity.Words" >
+    	INSERT INTO WORDS(id,
+			id_dwg,
+			id_ac,
+			wname,
+			autoin,
+			wften,
+			wften2,
+			wx,
+			wx2,
+			sort,
+			state,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date)
+        SELECT #{id,jdbcType=VARCHAR},
+			#{idDwg,jdbcType=VARCHAR},
+			#{idAc,jdbcType=VARCHAR},
+			#{wname,jdbcType=VARCHAR},
+			#{autoin,jdbcType=DECIMAL},
+			#{wften,jdbcType=INTEGER},
+			#{wften2,jdbcType=INTEGER},
+			#{wx,jdbcType=VARCHAR},
+			#{wx2,jdbcType=VARCHAR},
+			#{sort,jdbcType=INTEGER},
+			#{state,jdbcType=DECIMAL},
+			#{remarks,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			#{createDate,jdbcType=TIMESTAMP},
+			#{updateBy,jdbcType=VARCHAR},
+			#{updateDate,jdbcType=TIMESTAMP} FROM dual
+        WHERE NOT EXISTS(SELECT 1 FROM WORDS where wname=#{wname,jdbcType=VARCHAR})
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="update" parameterType="com.yls.projects.robot.entity.Words" >
+    update WORDS
+    <set >
+      <if test="idAc != null" >
+        idAc = #{idAc,jdbcType=VARCHAR},
+      </if>
+      <if test="idDwg != null" >
+        id_dwg = #{idDwg,jdbcType=VARCHAR},
+      </if>
+      <if test="wname != null" >
+      	wname = #{wname,jdbcType=VARCHAR},
+      </if>
+      <if test="wx != null" >
+        wx = #{wx,jdbcType=VARCHAR},
+      </if>
+      <if test="wx2 != null" >
+        wx2 = #{wx2,jdbcType=VARCHAR},
+      </if>
+      <if test="wften != null" >
+        wften = #{wften,jdbcType=INTEGER},
+      </if>
+      <if test="wften2 != null" >
+        wften2 = #{wften2,jdbcType=INTEGER},
+      </if>
+      <if test="autoin != null" >
+        autoin = #{autoin,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    
+    <!-- 批量插入数据 -->
+    <!-- <insert id="batchInserts" parameterType="com.yls.projects.robot.entity.Words">
+		INSERT IGNORE INTO WORDS(
+			id,
+			id_dwg,
+			id_ac,
+			wname,
+			autoin,
+			wften,
+			wften2,
+			wx,
+			wx2,
+			sort,
+			state,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES  
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id,jdbcType=VARCHAR},
+				#{item.idDwg,jdbcType=VARCHAR},
+				#{item.idAc,jdbcType=VARCHAR},
+				#{item.wname,jdbcType=VARCHAR},
+				#{item.autoin,jdbcType=DECIMAL},
+				#{item.wften,jdbcType=INTEGER},
+				#{item.wften2,jdbcType=INTEGER},
+				#{item.wx,jdbcType=VARCHAR},
+				#{item.wx2,jdbcType=VARCHAR},
+				#{item.sort,jdbcType=INTEGER},
+				#{item.state,jdbcType=DECIMAL},
+				#{item.remarks,jdbcType=VARCHAR},
+				#{item.createBy,jdbcType=VARCHAR},
+				#{item.createDate,jdbcType=TIMESTAMP},
+				#{item.updateBy,jdbcType=VARCHAR},
+				#{item.updateDate,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert> -->
+	
+	<!-- 根据动态组id查询动态词 -->
+	<select id="getListByIdDwg" resultType="com.yls.projects.robot.entity.Words" parameterType="com.yls.projects.robot.vo.WordsVo">
+    	select * from WORDS 
+    	<where>
+    		1 = 1
+    		<if test="idDwg != null and idDwg != ''">
+    			and id_dwg = #{idDwg}
+    		</if>
+    		<if test="idDwg == null">
+    			and id_dwg is null
+    		</if>
+    		<if test="wname != null and wname != ''">
+    			and wname like concat('%',#{wname},'%') 
+    		</if>
+    		<if test="idAc != null and idAc != ''">
+    			and id_ac = #{idAc}
+    		</if>
+    	</where>
+    	order by update_date desc
+    	limit #{startIndex},#{size}
+	</select>
+	
+	<!-- 获取总数 -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.vo.WordsVo">
+    	select count(id) from WORDS 
+    	<where>
+    		1 = 1
+    		<if test="idDwg != null and idDwg != ''">
+    			and id_dwg = #{idDwg}
+    		</if>
+    		<if test="idDwg == null">
+    			and id_dwg is null
+    		</if>
+    		<if test="wname != null and wname != ''">
+    			and wname like concat('%',#{wname},'%') 
+    		</if>
+    		<if test="idAc != null and idAc != ''">
+    			and id_ac = #{idAc}
+    		</if>
+    	</where>
+    </select>
+    
+    <!-- 删除数据 -->
+	<delete id="delete" parameterType="com.yls.projects.robot.entity.Words" >
+    	delete from WORDS where id = #{id}
+  	</delete>
+  	
+  	<!-- 批量更新数据 -->
+    <update id="batchUpdate">
+    	UPDATE WORDS SET 
+			state = #{state},
+			update_by = #{updateBy}
+		WHERE id in
+    	<foreach collection="list" item="id" index="index"  open="(" separator="," close=")">
+			#{id}
+		</foreach>
+    </update>
+    
+    <!-- 添加数据 动态词添加,重名就替换 -->
+    <insert id="insertReplace" parameterType="com.yls.projects.robot.entity.Words" >
+    	REPLACE INTO WORDS(
+			id,
+			id_dwg,
+			id_ac,
+			wname,
+			autoin,
+			wften,
+			wften2,
+			wx,
+			wx2,
+			sort,
+			state,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id,jdbcType=VARCHAR},
+			#{idDwg,jdbcType=VARCHAR},
+			#{idAc,jdbcType=VARCHAR},
+			#{wname,jdbcType=VARCHAR},
+			#{autoin,jdbcType=DECIMAL},
+			#{wften,jdbcType=INTEGER},
+			#{wften2,jdbcType=INTEGER},
+			#{wx,jdbcType=VARCHAR},
+			#{wx2,jdbcType=VARCHAR},
+			#{sort,jdbcType=INTEGER},
+			#{state,jdbcType=DECIMAL},
+			#{remarks,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			#{createDate,jdbcType=TIMESTAMP},
+			#{updateBy,jdbcType=VARCHAR},
+			#{updateDate,jdbcType=TIMESTAMP}
+		)
+    </insert>
+    
+    <!-- 根据动态组id查询动态词 -->
+	<select id="getListByName" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.entity.Words">
+    	SELECT COUNT(*)
+		FROM WORDS a
+		where (a.id_ac = '1' or a.id_ac = #{idAc}) and a.wname = #{wname}
+	</select>
+	
+	<!-- 根据动态组id查询动态词 -->
+	<select id="getEntityByName" resultType="com.yls.projects.robot.entity.Words" parameterType="com.yls.projects.robot.entity.Words">
+    	SELECT *
+		FROM WORDS a
+		where (a.id_ac = '1' or a.id_ac = #{idAc}) and a.wname = #{wname}
+	</select>
+    
+    <insert id="batchInserts" parameterType="com.yls.projects.robot.entity.Words">
+		<foreach collection="list" item="item" index="index" separator=";">
+			INSERT INTO WORDS(id,
+			id_dwg,
+			id_ac,
+			wname,
+			autoin,
+			wften,
+			wften2,
+			wx,
+			wx2,
+			sort,
+			state,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date)
+        SELECT #{id,jdbcType=VARCHAR},
+			#{idDwg,jdbcType=VARCHAR},
+			#{idAc,jdbcType=VARCHAR},
+			#{wname,jdbcType=VARCHAR},
+			#{autoin,jdbcType=DECIMAL},
+			#{wften,jdbcType=INTEGER},
+			#{wften2,jdbcType=INTEGER},
+			#{wx,jdbcType=VARCHAR},
+			#{wx2,jdbcType=VARCHAR},
+			#{sort,jdbcType=INTEGER},
+			#{state,jdbcType=DECIMAL},
+			#{remarks,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			#{createDate,jdbcType=TIMESTAMP},
+			#{updateBy,jdbcType=VARCHAR},
+			#{updateDate,jdbcType=TIMESTAMP} FROM dual
+        WHERE NOT EXISTS(SELECT 1 FROM WORDS where wname=#{wname,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<!-- 添加数据 -->
+    <insert id="commonInsert" parameterType="com.yls.projects.robot.entity.Words" >
+    	INSERT INTO WORDS(id,
+			id_dwg,
+			id_ac,
+			wname,
+			autoin,
+			wften,
+			wften2,
+			wx,
+			wx2,
+			sort,
+			state,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date)
+        values( #{id,jdbcType=VARCHAR},
+			#{idDwg,jdbcType=VARCHAR},
+			#{idAc,jdbcType=VARCHAR},
+			#{wname,jdbcType=VARCHAR},
+			#{autoin,jdbcType=DECIMAL},
+			#{wften,jdbcType=INTEGER},
+			#{wften2,jdbcType=INTEGER},
+			#{wx,jdbcType=VARCHAR},
+			#{wx2,jdbcType=VARCHAR},
+			#{sort,jdbcType=INTEGER},
+			#{state,jdbcType=DECIMAL},
+			#{remarks,jdbcType=VARCHAR},
+			#{createBy,jdbcType=VARCHAR},
+			#{createDate,jdbcType=TIMESTAMP},
+			#{updateBy,jdbcType=VARCHAR},
+			#{updateDate,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

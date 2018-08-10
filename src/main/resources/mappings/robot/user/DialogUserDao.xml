@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.DialogUserDao">
+
+    <select id="getById" resultType="DialogUser">
+		select * from dialog_user where user_id = #{0}
+	</select>
+	
+	<!-- 根据手机号码查询用户，如果找到用户，说明该手机号已经被注册了 -->
+    <select id="getByTelPhone" resultType="DialogUser">
+		select * from dialog_user where telphone = #{telphone}
+	</select>
+	
+	<!-- 保存手机号注册用户信息 -->
+	<insert id="saveTelPhoneRegister">
+		INSERT INTO dialog_user(user_id,id_ac,telphone,nick_name,is_safety_phone,pwd,register_type,create_by,update_by)VALUES(#{userId},#{idAc},#{telphone},#{nickName},#{isSafetyPhone},#{pwd},#{registerType},#{createBy},#{updateBy})
+	</insert>
+	
+	<!-- 保存用短信验证码登录的用户信息 -->
+	<insert id="saveVerifyRegister">
+		INSERT INTO dialog_user(user_id,id_ac,telphone,is_safety_phone,pwd,register_type,create_by,update_by)VALUES(#{userId},#{idAc},#{telphone},#{isSafetyPhone},#{pwd},#{registerType},#{createBy},#{updateBy})
+	</insert>
+
+	<select id="getByUserId" resultType="com.yls.projects.robot.vo.DialogUserVo" parameterType="com.yls.projects.robot.entity.DialogUser">
+		select b.account_name AS "acountName",b.super_user_id AS "superUserId",b.vip_expire_time AS "vipExpireTime",
+		c.vip_level_name AS "vipLevelName",a.nick_name AS "nickName",a.user_id AS "userId",a.telphone AS "telphone",
+		a.is_safety_phone AS "isSavetyPhone",a.pwd AS "pwd",a.email AS "email",a.is_safety_email AS "isSavetyEmail",
+		a.register_type AS "registerType",a.qq4_user_id AS "qq4UserId",a.wx4_user_id AS "wx4UserId",a.xlwb4_user_id AS "xlwb4UserId",
+		a.id_ac AS "idAc"
+		from dialog_user a,account b,dialog_vip c
+		where a.id_ac = b.id
+		and b.vip_id = c.vip_id
+		and user_id = #{userId}
+	</select>
+	
+	<!-- 修改数据 -->
+	<update id="update" parameterType="com.yls.projects.robot.entity.DialogUser">
+		update dialog_user
+    <set >
+      <if test="idAc != null" >
+        id_ac = #{idAc,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=CHAR},
+      </if>
+      <if test="isSafetyPhone != null" >
+        is_safety_phone = #{isSafetyPhone,jdbcType=CHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="isSafetyEmail != null" >
+        is_safety_email = #{isSafetyEmail,jdbcType=CHAR},
+      </if>
+      <if test="registerType != null" >
+        register_type = #{registerType,jdbcType=CHAR},
+      </if>
+      <if test="qq4UserId != null" >
+        qq4_user_id = #{qq4UserId,jdbcType=VARCHAR},
+      </if>
+      <if test="wx4UserId != null" >
+        wx4_user_id = #{wx4UserId,jdbcType=VARCHAR},
+      </if>
+      <if test="xlwb4UserId != null" >
+        xlwb4_user_id = #{xlwb4UserId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=CHAR}
+	</update>
+	
+	<!-- 根据账号Id查询列表 -->
+	<select id="getListByIdAc" resultType="com.yls.projects.robot.entity.DialogUser" parameterType="com.yls.projects.robot.vo.DialogUserVo">
+    	select * from dialog_user where id_ac = #{idAc}
+    	limit #{startIndex},#{size}
+	</select>
+	
+	<!-- 获取总数 -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.vo.DialogUserVo">
+    	select count(user_id) from dialog_user where id_ac = #{idAc}
+    </select>
+    
+    <!-- 删除数据 -->
+    <update id="delete" parameterType="com.yls.projects.robot.entity.DialogUser">
+    	update dialog_user set del_flag = '1'
+    	where user_id = #{userId}
+  	</update>
+	
+</mapper>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"></meta>
+	<title th:text="${title}">首页</title>
+	<meta name="renderer" content="webkit"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
+	<link rel="stylesheet" th:href="@{~/layui/css/layui.css}" media="all"></link>
+	<script th:src="@{~/layui/layui.js}" charset="utf-8"></script>
+	<script th:src="@{~/js/jquery-1.11.2.min.js}" charset="utf-8"></script>
+	<style type="text/css">
+	
+		
+		
+	</style>
+	<script>
+		layui.use(['form','util', 'laydate', 'layer','element','laypage'], function(){
+			  var util = layui.util
+			  ,laydate = layui.laydate
+			  ,layer = layui.layer
+			  ,laypage = layui.laypage
+			  ,form = layui.form;
+			  
+			//监听提交
+			  form.on('submit(register)', function(data){
+				  
+				  var telPhone = data.field.telPhone;
+				  var pwd = data.field.pwd;
+				  var code = data.field.code;
+				  var url = "/register/saveTelPhoneRegister";
+				  console.log(data);
+				  console.log(telPhone);
+				  console.log(pwd);
+				  
+				 $.post(url,{"telPhone":telPhone,"pwd":pwd,"code":code},function(res){
+					  console.log(res);
+					  if(res.result==1){
+						  layer.msg("注册成功");
+						  window.location.href = "/login/index";
+					  }else if(res.result==2){
+						  layer.msg("该手机号已被注册");
+					  }else if(res.result==0){
+						  layer.msg("注册失败");
+					  }
+				  }); 
+				  
+				  return false;
+				 
+			  });
+			
+			  
+		});
+		
+	
+		
+	</script>
+	
+</head>
+<body>
+
+	<div class="layui-container">
+		<h1>登录成功</h1>
+		<h1>登录后才能看到这个页面哦！</h1>
+		<h3><a href="/logout">退出登录</a></h3>
+	</div>
+	
+</body>
+</html>

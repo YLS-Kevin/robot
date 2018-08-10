@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.RobotClientUseLogDao" >
+  
+  <sql id="RobotClientUseLogColumns">
+	a.id AS "id",
+	a.id_cu AS "idCu",
+	a.cip AS "cip",
+	a.lon AS "lon",
+	a.lat AS "lat",
+	a.scity AS "scity",
+	a.saddr AS "saddr",
+	a.vdate AS "vdate",
+	a.mansay AS "mansay",
+	a.robotsay AS "robotsay",
+	a.participle AS "participle",
+	b.cname AS "cname",
+	a.isfind as "isfind"
+  </sql>
+  
+  <!-- 根据机器人终端id查询信息 -->
+  <select id="getListByIdCu" parameterType="com.yls.projects.robot.entity.RobotClientUseLog" resultType="com.yls.projects.robot.entity.RobotClientUseLog">
+  	select 
+  		<include refid="RobotClientUseLogColumns"/>
+  	from ROBOT_CLIENT_USE_LOG a,
+	robots b,
+	ROTOT_CLIENT c
+   	<where>
+	   	a.id_cu = c.id and
+		c.cid = b.id
+		and c.cid = #{idCu}
+	    <if test="mansay != null and mansay != ''">
+	    	and a.mansay like concat('%',#{mansay},'%') 
+	    </if>
+	    <if test="robotsay != null and robotsay != ''">
+	    	and a.robotsay like concat('%',#{robotsay},'%') 
+	    </if>
+	    <if test="cip != null and cip != ''">
+	    	and a.cip like concat('%',#{cip},'%') 
+	    </if>
+	    <if test="scity != null and scity != ''">
+	    	and a.scity like concat('%',#{scity},'%') 
+	    </if>
+	    <if test="bDate != null and bDate != ''">
+			and a.vdate <![CDATA[>= ]]> #{bDate}<!-- date_format(#{bDate},'%Y-%m-%d %H:%i:%s') -->
+		</if>
+		<if test="eDate != null and eDate != ''">
+			and a.vdate <![CDATA[<= ]]> #{eDate}<!-- date_format(#{eDate},'%Y-%m-%d %H:%i:%s') -->
+		</if>
+		 <if test="isfind != null and isfind != ''">
+	    	and a.isfind = #{isfind}
+	    </if>
+    </where>
+   	ORDER BY a.vdate desc
+    limit #{startIndex},#{size}
+  </select>
+  
+  	<!-- 获取总数 -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.entity.RobotClientUseLog">
+    	select count(a.id)
+	  	from ROBOT_CLIENT_USE_LOG a,
+			robots b,
+			ROTOT_CLIENT c
+	   	<where>
+		   	a.id_cu = c.id and
+			c.cid = b.id
+			and c.cid = #{idCu}
+		    <if test="mansay != null and mansay != ''">
+		    	and a.mansay like concat('%',#{mansay},'%') 
+		    </if>
+		    <if test="robotsay != null and robotsay != ''">
+		    	and a.robotsay like concat('%',#{robotsay},'%') 
+		    </if>
+		    <if test="cip != null and cip != ''">
+		    	and a.cip like concat('%',#{cip},'%') 
+		    </if>
+		    <if test="scity != null and scity != ''">
+		    	and a.scity like concat('%',#{scity},'%') 
+		    </if>
+		    <if test="bDate != null and bDate != ''">
+				and a.vdate <![CDATA[>= ]]> #{bDate}<!-- date_format(#{bDate},'%Y-%m-%d %H:%i:%s') -->
+			</if>
+			<if test="eDate != null and eDate != ''">
+				and a.vdate <![CDATA[<= ]]> #{eDate}<!-- date_format(#{eDate},'%Y-%m-%d %H:%i:%s') -->
+			</if>
+			<if test="isfind != null and isfind != ''">
+	    		and a.isfind = #{isfind}
+	    	</if>
+	    </where>
+    </select>
+  
+</mapper>

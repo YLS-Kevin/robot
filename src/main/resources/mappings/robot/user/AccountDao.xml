@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.AccountDao">
+
+	<!-- 保存注册账户信息 -->
+    <insert id="saveAccount">
+    		INSERT INTO account(id,super_user_id,vip_id,vip_expire_time,create_by,update_by)values(#{id},#{superUserId},#{vipId},#{vipExpireTime},#{createBy},#{updateBy})
+    </insert>
+    
+    <!-- 修改数据 -->
+	<update id="update" parameterType="com.yls.projects.robot.entity.Account" >
+    update account
+    <set >
+      <if test="accountName != null" >
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="superUserId != null" >
+        super_user_id = #{superUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="vipId != null" >
+        vip_id = #{vipId,jdbcType=VARCHAR},
+      </if>
+      <if test="vipExpireTime != null" >
+        vip_expire_time = #{vipExpireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="atype != null" >
+        atype = #{atype,jdbcType=CHAR},
+      </if>
+      <if test="isauth != null" >
+        isauth = #{isauth,jdbcType=CHAR},
+      </if>
+      <if test="authtime != null" >
+        authtime = #{authtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据超级用户id获取信息 -->
+  <select id="getBySuperUserId" resultType="com.yls.projects.robot.entity.Account">
+  	select * from account where super_user_id = #{superUserId}
+  </select>
+</mapper>

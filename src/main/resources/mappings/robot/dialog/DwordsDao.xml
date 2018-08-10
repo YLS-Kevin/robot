@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.DwordsDao" >
+  	
+	<!-- 添加数据 -->
+	<insert id="insert" parameterType="com.yls.projects.robot.entity.Dwords" >
+    insert into DWORDS (id, id_ac, id_dwg, 
+      dwname, state, sort
+      )
+    values (#{id,jdbcType=VARCHAR}, #{idAc,jdbcType=VARCHAR}, #{idDwg,jdbcType=VARCHAR}, 
+      #{dwname,jdbcType=VARCHAR}, #{state,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER}
+      )
+  	</insert>
+  	
+  	<!-- 更新数据 -->
+  	<update id="update" parameterType="com.yls.projects.robot.entity.Dwords" >
+    update DWORDS
+    <set >
+      <if test="idAc != null" >
+        id_ac = #{idAc,jdbcType=VARCHAR},
+      </if>
+      <if test="idDwg != null" >
+        id_dwg = #{idDwg,jdbcType=VARCHAR},
+      </if>
+      <if test="dwname != null" >
+        dwname = #{dwname,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 根据动态组id查询动态词 -->
+    <select id="getListByIdDwg" resultType="com.yls.projects.robot.entity.Dwords" parameterType="com.yls.projects.robot.vo.DwordsVo">
+    	select * from DWORDS where id_dwg = #{idDwg} and id_ac = #{idAc}
+    	limit #{startIndex},#{size}
+    </select>
+    
+    <!-- 获取总数 -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.vo.DwordsVo">
+    	select count(id) from DWORDS where id_dwg = #{idDwg} and id_ac = #{idAc}
+    </select>
+</mapper>

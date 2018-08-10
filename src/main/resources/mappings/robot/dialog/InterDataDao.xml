@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.InterDataDao">
+	<resultMap id="BaseResultMap" type="com.yls.projects.robot.entity.InterData">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="id_ac" property="idAc" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="urltest" property="urltest" jdbcType="VARCHAR" />
+		<result column="explains" property="explains" jdbcType="VARCHAR" />
+		<result column="icall" property="icall" jdbcType="VARCHAR" />
+		<result column="param_name" property="paramName" jdbcType="VARCHAR" />
+		<result column="param_value" property="paramValue" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="CHAR" />
+		<result column="paracode" property="paracode" jdbcType="VARCHAR" />
+		<result column="needlogin" property="needlogin" jdbcType="DECIMAL" />
+		<result column="loginkey" property="loginkey" jdbcType="VARCHAR" />
+		<result column="loginsecret" property="loginsecret" jdbcType="VARCHAR" />
+		<result column="create_by" property="createBy" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, id_ac, url, urltest, explains, icall, param_name,
+		param_value, state,
+		paracode,
+		needlogin, loginkey, loginsecret,
+		create_by, create_date, update_by, update_date
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from INTER_DATA
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		INTER_DATA
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.yls.projects.robot.entity.InterData">
+		insert into INTER_DATA (id,
+		id_ac, url,
+		urltest, explains, icall,
+		param_name, param_value, state, del_flag,
+		paracode, needlogin, loginkey,
+		loginsecret, create_by, create_date,
+		update_by, update_date)
+		values (#{id,jdbcType=VARCHAR},
+		#{idAc,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{urltest,jdbcType=VARCHAR}, #{explains,jdbcType=VARCHAR},
+		#{icall,jdbcType=VARCHAR},
+		#{paramName,jdbcType=VARCHAR},
+		#{paramValue,jdbcType=VARCHAR},
+		#{state,jdbcType=CHAR},
+		#{delFlag,jdbcType=CHAR},
+		#{paracode,jdbcType=VARCHAR}, #{needlogin,jdbcType=DECIMAL},
+		#{loginkey,jdbcType=VARCHAR},
+		#{loginsecret,jdbcType=VARCHAR},
+		#{createBy,jdbcType=VARCHAR},
+		#{createDate,jdbcType=TIMESTAMP},
+		#{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.yls.projects.robot.entity.InterData">
+		insert into INTER_DATA
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="idAc != null">
+				id_ac,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="urltest != null">
+				urltest,
+			</if>
+			<if test="explains != null">
+				explains,
+			</if>
+			<if test="icall != null">
+				icall,
+			</if>
+			<if test="paramName != null">
+				param_name,
+			</if>
+			<if test="paramValue != null">
+				param_value,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="paracode != null">
+				paracode,
+			</if>
+			<if test="needlogin != null">
+				needlogin,
+			</if>
+			<if test="loginkey != null">
+				loginkey,
+			</if>
+			<if test="loginsecret != null">
+				loginsecret,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="idAc != null">
+				#{idAc,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="urltest != null">
+				#{urltest,jdbcType=VARCHAR},
+			</if>
+			<if test="explains != null">
+				#{explains,jdbcType=VARCHAR},
+			</if>
+			<if test="icall != null">
+				#{icall,jdbcType=VARCHAR},
+			</if>
+			<if test="paramName != null">
+				#{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="paramValue != null">
+				#{paramValue,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=CHAR},
+			</if>
+			<if test="paracode != null">
+				#{paracode,jdbcType=VARCHAR},
+			</if>
+			<if test="needlogin != null">
+				#{needlogin,jdbcType=DECIMAL},
+			</if>
+			<if test="loginkey != null">
+				#{loginkey,jdbcType=VARCHAR},
+			</if>
+			<if test="loginsecret != null">
+				#{loginsecret,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yls.projects.robot.entity.InterData">
+		update INTER_DATA
+		<set>
+			<if test="idAc != null">
+				id_ac = #{idAc,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="urltest != null">
+				urltest = #{urltest,jdbcType=VARCHAR},
+			</if>
+			<if test="explains != null">
+				explains = #{explains,jdbcType=VARCHAR},
+			</if>
+			<if test="icall != null">
+				icall = #{icall,jdbcType=VARCHAR},
+			</if>
+			<if test="paramName != null">
+				param_name = #{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="paramValue != null">
+				param_value = #{paramValue,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=CHAR},
+			</if>
+			<if test="paracode != null">
+				paracode = #{paracode,jdbcType=VARCHAR},
+			</if>
+			<if test="needlogin != null">
+				needlogin = #{needlogin,jdbcType=DECIMAL},
+			</if>
+			<if test="loginkey != null">
+				loginkey = #{loginkey,jdbcType=VARCHAR},
+			</if>
+			<if test="loginsecret != null">
+				loginsecret = #{loginsecret,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+				update_date = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yls.projects.robot.entity.InterData">
+		update INTER_DATA
+		<set>
+			<if test="idAc != null">
+				id_ac = #{idAc,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="urltest != null">
+				urltest = #{urltest,jdbcType=VARCHAR},
+			</if>
+			<if test="explains != null">
+				explains = #{explains,jdbcType=VARCHAR},
+			</if>
+			<if test="icall != null">
+				icall = #{icall,jdbcType=VARCHAR},
+			</if>
+			<if test="paramName != null">
+				param_name = #{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="paramValue != null">
+				param_value = #{paramValue,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=CHAR},
+			</if>
+			<if test="paracode != null">
+				paracode = #{paracode,jdbcType=VARCHAR},
+			</if>
+			<if test="needlogin != null">
+				needlogin = #{needlogin,jdbcType=DECIMAL},
+			</if>
+			<if test="loginkey != null">
+				loginkey = #{loginkey,jdbcType=VARCHAR},
+			</if>
+			<if test="loginsecret != null">
+				loginsecret = #{loginsecret,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+				update_date = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 根据账号ID查询列表 -->
+	<select id="listInterDataByPage" resultType="com.yls.projects.robot.entity.InterData"
+		parameterType="com.yls.projects.robot.vo.InterDataVo">
+		select * from INTER_DATA a where a.id_ac = #{idAc} and del_flag = '0'
+		<choose>
+			<when test="explains != null and explains != ''">
+				and a.explains LIKE concat('%',#{explains},'%')
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		order by update_date desc
+		limit #{startIndex},#{size}
+	</select>
+
+	<!-- 获取总数 -->
+	<select id="getCount" resultType="java.lang.Integer"
+		parameterType="com.yls.projects.robot.vo.InterDataVo">
+		select count(id) from INTER_DATA
+		where id_ac = #{idAc} and del_flag = '0'
+		<choose>
+			<when test="explains != null and explains != ''">
+				and explains LIKE concat('%',#{explains},'%')
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 获取单个数据接口信息 -->
+	<select id="getInterDataById" resultType="com.yls.projects.robot.entity.InterData"
+		parameterType="com.yls.projects.robot.vo.InterDataVo">
+		select
+		<include refid="Base_Column_List" />
+		from INTER_DATA
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 批量启用或禁用接口数据 -->
+	<update id="batchActiveInter" parameterType="java.util.Map">
+		update INTER_DATA
+		set state = #{state,jdbcType=CHAR}
+		where id in
+		<foreach collection="ids" index="index" item="item"
+			separator="," open="(" close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	<!-- 批量删除接口数据 -->
+	<update id="delInterface" parameterType="java.util.Map">
+		update INTER_DATA
+		set del_flag = '1'
+		where id in
+		<foreach collection="ids" index="index" item="item"
+			separator="," open="(" close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	<select id="getCountByInterName" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.vo.InterDataVo">
+    	select count(id) from INTER_DATA where id_ac = #{idAc}
+    		and explains = #{explains} and del_flag = '0'
+    		<if test="id != null and id != ''">
+    		and id  &lt;&gt; #{id}
+    	</if>
+    </select>
+</mapper>

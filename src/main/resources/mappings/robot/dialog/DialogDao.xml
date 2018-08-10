@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.DialogDao">
+	<!-- 添加人机对话表 -->
+	<insert id="insert" parameterType="com.yls.projects.robot.entity.Dialog">
+	    insert into DIALOG (id, id_ac, id_dt, 
+		    <if test="cidMIdDt != null">
+				 cid_m_id_dt,
+			</if>
+	      atype, mul_dialog_type, id_ap, team_id, 
+	      state, sort, remarks, 
+	      create_by, create_date, update_by, 
+	      update_date, del_flag)
+	    values (#{id,jdbcType=VARCHAR}, #{idAc,jdbcType=VARCHAR}, #{idDt,jdbcType=VARCHAR}, 
+	    	<if test="cidMIdDt != null">
+				#{cidMIdDt,jdbcType=VARCHAR},
+			</if>
+	      #{atype,jdbcType=DECIMAL}, #{mulDialogType,jdbcType=DECIMAL}, #{idAp,jdbcType=VARCHAR}, #{teamId,jdbcType=VARCHAR}, 
+	      #{state,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+	      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+	      #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR})
+  	</insert>
+
+	<!-- 根据id删除固定对话,软删除 -->
+	<update id="delById" parameterType="java.lang.String">
+	  	update DIALOG set del_flag = '1' where id = #{id}
+	</update>
+  
+    <!-- 根据组别id获取人机对话信息 -->
+    <select id="getDialogByTeamId" parameterType="java.lang.String" resultType="com.yls.projects.robot.entity.Dialog">
+   		select * from DIALOG where del_flag = '0' and team_id = #{teamId}
+    </select>
+    
+    <!-- 根据条件查询列表(固定应答) -->
+    <select id="getDialogByIdDt" resultType="com.yls.projects.robot.vo.DialogVo" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+	    SELECT id AS "id",MAX(isI) AS "isI",MAX(aptype) AS "aptype",MAX(aword) AS "aword",MAX(answer) AS "answer",
+		MAX(keyword) AS "keyWord",MAX(updateDate) AS "updateDate",MAX(state) AS "state" from
+		(
+			select a.id AS "id",a.atype AS "isI",b.aptype AS "aptype",b.aword AS "aword",c.answer AS "answer",
+			concat_ws(' ',b.aword1,replace(replace(b.aword1dyna,'(&amp;',''),'&amp;)',''),
+			b.aword2,replace(replace(b.aword2dyna,'(&amp;',''),'&amp;)',''),
+			b.aword3,replace(replace(b.aword3dyna,'(&amp;',''),'&amp;)',''),
+			b.aword4,replace(replace(b.aword4dyna,'(&amp;',''),'&amp;)',''),
+			b.aword5,replace(replace(b.aword5dyna,'(&amp;',''),'&amp;)','')) AS "keyword",
+			a.update_date AS "updateDate",a.state AS "state"
+			from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_STATIC c
+			where a.id = b.id_d 
+			and a.id = c.id_d
+			and a.del_flag = '0'
+			and a.atype = '2'
+			and a.mul_dialog_type is null
+			and a.id_dt = #{idDt}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%') 
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%')
+				)
+			</if>
+		)k
+		GROUP BY id
+		<if test="descSingleCol != null and descSingleCol != '' and descSingle != null and descSingle != ''">
+			ORDER BY ${descSingleCol} ${descSingle}
+		</if>
+    	limit #{startIndexSingle},#{sizeSingle} 
+    </select>
+    
+    <!-- 获取总数(固定应答) -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+    	select count(id) from 
+    	(
+			select a.id from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_STATIC c
+			where a.id = b.id_d  
+			and a.id = c.id_d
+			and a.del_flag = '0'
+			and a.atype = '2'
+			and a.mul_dialog_type is null
+			and a.id_dt = #{idDt}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%')
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%') 	
+				)
+			</if>
+			GROUP BY a.id
+		)k
+    </select>
+    
+    <!-- 根据条件查询列表(接口对话) -->
+    <select id="getInterfaceByIdDt" resultType="com.yls.projects.robot.vo.DialogVo" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+    	select id AS "id",MAX(isI) AS "isI",MAX(aptype) AS "aptype",MAX(aword) AS "aword",MAX(answer) AS "answer",
+		MAX(keyword) AS "keyword",MAX(updateDate) AS "updateDate",MAX(state) AS "state" from 
+		(
+			select a.id AS "id",a.atype AS "isI",b.aptype AS "aptype",b.aword AS "aword",d.explains AS 'answer',
+			concat_ws(' ',b.aword1,replace(replace(b.aword1dyna,'(&amp;',''),'&amp;)',''),
+			b.aword2,replace(replace(b.aword2dyna,'(&amp;',''),'&amp;)',''),
+			b.aword3,replace(replace(b.aword3dyna,'(&amp;',''),'&amp;)',''),
+			b.aword4,replace(replace(b.aword4dyna,'(&amp;',''),'&amp;)',''),
+			b.aword5,replace(replace(b.aword5dyna,'(&amp;',''),'&amp;)','')) AS "keyword",
+			a.update_date AS "updateDate",a.state AS "state" 
+			from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_INTER c,INTER_DATA d
+			where a.id = b.id_d
+			and a.id = c.id_d
+			and c.id_di = d.id
+			and a.del_flag = '0'
+			and a.atype = '3'
+			and a.mul_dialog_type is null
+			and a.id_dt = #{idDt}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%')
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%') 	
+				)
+			</if>
+		)k
+		GROUP BY id
+		<if test="descSingleCol != null and descSingleCol != '' and descSingle != null and descSingle != ''">
+			ORDER BY ${descSingleCol} ${descSingle}
+		</if>
+		limit #{startIndexSingle},#{sizeSingle} 
+    </select>
+    
+    <!-- 获取总数(接口应答) -->
+    <select id="getInterfaceCount" resultType="java.lang.Integer" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+    	select count(id) from 
+    	(
+			select a.id from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_INTER c,INTER_DATA d
+			where a.id = b.id_d 
+			and a.id = c.id_d
+			and c.id_di = d.id
+			and a.del_flag = '0'
+			and a.atype = '3'
+			and a.mul_dialog_type is null
+			and a.id_dt = #{idDt}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%')
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%') 	
+				)
+			</if>
+			GROUP BY a.id
+		)k
+    </select>
+    
+    <!-- 根据条件查询多轮对话列表 -->
+  	<select id="getMulDialogByIdDt" resultType="com.yls.projects.robot.vo.DialogVo" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+  		select b.id AS "id",b.tname AS "tname",count(a.id) AS "nums",b.update_date AS "updateDate",b.state AS "state"
+		from DIALOG a,DIALOG_MORE b
+		where a.id_ap = b.id
+		and a.del_flag = '0'
+		and a.mul_dialog_type in('4','5')
+		and a.id_dt = #{idDt}
+		<if test="state != null and state != ''">
+			and a.state = #{state}
+		</if>
+		group by b.id
+		<if test="descMulCol != null and descMulCol != '' and descMul != null and descMul != ''">
+			ORDER BY ${descMulCol} ${descMul}
+		</if>
+  		limit #{startIndexMul},#{sizeMul} 
+  	</select>
+  	
+  	<!-- 获取总数(多轮应答) -->
+    <select id="getCountMul" resultType="java.lang.Integer" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+    	select count(k.id) from 
+    	(
+	    	select b.id from DIALOG a,DIALOG_MORE b
+			where a.id_ap = b.id
+			and a.del_flag = '0'
+			and a.mul_dialog_type in('4','5')
+			and a.id_dt = #{idDt}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			group by b.id
+		)k
+    </select>
+    
+    <!-- 根据条件查询列表(多轮应答里面的固定应答) -->
+    <select id="getMulDialogByIdAc" resultType="com.yls.projects.robot.vo.DialogVo" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+  		SELECT id AS "id",MAX(isI) AS "isI",MAX(aptype) AS "aptype",MAX(aword) AS "aword",MAX(answer) AS "answer",
+		MAX(keyword) AS "keyWord",MAX(updateDate) AS "updateDate",MAX(state) AS "state" from
+		(
+			select a.id AS "id",a.atype AS "isI",b.aptype AS "aptype",b.aword AS "aword",c.answer AS "answer",
+			concat_ws(' ',b.aword1,replace(replace(b.aword1dyna,'(&amp;',''),'&amp;)',''),
+			b.aword2,replace(replace(b.aword2dyna,'(&amp;',''),'&amp;)',''),
+			b.aword3,replace(replace(b.aword3dyna,'(&amp;',''),'&amp;)',''),
+			b.aword4,replace(replace(b.aword4dyna,'(&amp;',''),'&amp;)',''),
+			b.aword5,replace(replace(b.aword5dyna,'(&amp;',''),'&amp;)','')) AS "keyword",
+			a.update_date AS "updateDate",a.state AS "state"
+			from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_STATIC c
+			where a.id = b.id_d 
+			and a.id = c.id_d
+			and a.del_flag = '0'
+			and a.atype = #{isI}
+			and a.id_ap = #{idAp}
+			and a.mul_dialog_type = #{mulDialogType}
+			and a.id_ac = #{idAc}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%')
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%') 	
+				)
+			</if>
+		)k
+		GROUP BY id
+		<if test="descMulCol != null and descMulCol != '' and descMul != null and descMul != ''">
+			ORDER BY ${descMulCol} ${descMul}
+		</if>
+		<if test="mulDialogType == '4' or mulDialogType == 4 ">
+			limit #{startIndexMul},#{sizeMul} 
+		</if>
+    	<if test="mulDialogType == '5' or mulDialogType == 5">
+			limit #{startIndexMul2},#{sizeMul2} 
+		</if>
+  	</select>
+  	
+  	<!-- 获取总数(多轮应答里面的固定应答) -->
+    <select id="getCountByIdAc" resultType="java.lang.Integer" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+    	select count(id) from 
+    	(
+			select a.id from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_STATIC c
+			where a.id = b.id_d 
+			and a.id = c.id_d
+			and a.del_flag = '0'
+			and a.atype = #{isI}
+			and a.id_ap = #{idAp}
+			and a.mul_dialog_type = #{mulDialogType}
+			and a.id_ac = #{idAc}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%')
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%') 	
+				)
+			</if>
+			GROUP BY a.id
+		)k
+    </select>
+    
+    <!-- 根据条件查询列表(多轮应答里面的接口应答) -->
+    <select id="getMulDialogByIdAc2" resultType="com.yls.projects.robot.vo.DialogVo" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+    	select id AS "id",MAX(isI) AS "isI",MAX(aptype) AS "aptype",MAX(aword) AS "aword",MAX(answer) AS "answer",
+		MAX(keyword) AS "keyword",MAX(updateDate) AS "updateDate",MAX(state) AS "state" from 
+		(
+			select a.id AS "id",a.atype AS "isI",b.aptype AS "aptype",b.aword AS "aword",d.explains AS 'answer',
+			concat_ws(' ',b.aword1,replace(replace(b.aword1dyna,'(&amp;',''),'&amp;)',''),
+			b.aword2,replace(replace(b.aword2dyna,'(&amp;',''),'&amp;)',''),
+			b.aword3,replace(replace(b.aword3dyna,'(&amp;',''),'&amp;)',''),
+			b.aword4,replace(replace(b.aword4dyna,'(&amp;',''),'&amp;)',''),
+			b.aword5,replace(replace(b.aword5dyna,'(&amp;',''),'&amp;)','')) AS "keyword",
+			a.update_date AS "updateDate",a.state AS "state" 
+			from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_INTER c,INTER_DATA d
+			where a.id = b.id_d
+			and a.id = c.id_d
+			and c.id_di = d.id
+			and a.del_flag = '0'
+			and a.atype = #{isI}
+			and a.id_ap = #{idAp}
+			and a.mul_dialog_type = #{mulDialogType}
+			and a.id_ac = #{idAc}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%')
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%') 	
+				)
+			</if>
+		)k
+		GROUP BY id
+		<if test="descMulCol != null and descMulCol != '' and descMul != null and descMul != ''">
+			ORDER BY ${descMulCol} ${descMul}
+		</if>
+    	<if test="mulDialogType == '4' or mulDialogType == 4 ">
+			limit #{startIndexMul},#{sizeMul} 
+		</if>
+    	<if test="mulDialogType == '5' or mulDialogType == 5">
+			limit #{startIndexMul2},#{sizeMul2} 
+		</if>
+    </select>
+  	
+    <!-- 获取总数(多轮应答里面的接口应答) -->
+    <select id="getCountByIdAc2" resultType="java.lang.Integer" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+    	select count(id) from 
+    	(
+			select a.id from DIALOG a,DIALOG_MAN b,DIALOG_ROBOT_INTER c,INTER_DATA d
+			where a.id = b.id_d 
+			and a.id = c.id_d
+			and c.id_di = d.id
+			and a.del_flag = '0'
+			and a.atype = #{isI}
+			and a.id_ap = #{idAp}
+			and a.mul_dialog_type = #{mulDialogType}
+			and a.id_dt = #{idDt}
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and 
+				(
+					b.aword like concat('%',#{keyword},'%') 
+					or b.aword1 like concat('%',#{keyword},'%')
+					or b.aword2 like concat('%',#{keyword},'%')
+					or b.aword3 like concat('%',#{keyword},'%')
+					or b.aword4 like concat('%',#{keyword},'%')
+					or b.aword5 like concat('%',#{keyword},'%')
+					or b.aword1dyna like concat('%',#{keyword},'%')
+					or b.aword2dyna like concat('%',#{keyword},'%')
+					or b.aword3dyna like concat('%',#{keyword},'%')
+					or b.aword4dyna like concat('%',#{keyword},'%')
+					or b.aword5dyna like concat('%',#{keyword},'%') 	
+				)
+			</if>
+			GROUP BY a.id
+		)k
+    </select>
+    
+    <!-- 获取总数(aLL应答) -->
+    <select id="getAllCount" resultType="java.lang.Integer" parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+			select count(a.id) from DIALOG a 
+			where a.del_flag = '0'
+			<if test="idDt != null and idDt != ''">
+				and a.id_dt = #{idDt}
+			</if>
+			<if test="idAp != null and idAp != ''">
+				and a.id_ap = #{idAp}
+			</if>
+			<if test="state != null and state != ''">
+				and a.state = #{state}
+			</if>
+    </select>
+    
+    <!-- 批量更新数据 -->
+    <update id="batchUpdate">
+    	UPDATE DIALOG SET 
+			state = #{state},
+			update_by = #{updateBy}
+		WHERE id in
+    	<foreach collection="list" item="id" index="index"  open="(" separator="," close=")">
+			#{id}
+		</foreach>
+    </update>
+    
+     <!-- 批量更新数据 -->
+    <update id="updateDialog">
+    	UPDATE DIALOG SET 
+			update_date = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
+		WHERE id = #{id}
+    </update>
+    
+</mapper>

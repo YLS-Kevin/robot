@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"></meta>
+	<title th:text="${title}">首页</title>
+	<meta name="renderer" content="webkit"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
+	<link rel="stylesheet" th:href="@{~/layui/css/layui.css}" media="all"></link>
+	<script th:src="@{~/layui/layui.js}" charset="utf-8"></script>
+	<script th:src="@{~/js/jquery-1.11.2.min.js}" charset="utf-8"></script>
+	<style type="text/css">
+	
+		
+		
+	</style>
+	<script>
+		layui.use(['form','util', 'laydate', 'layer','element','laypage'], function(){
+			  var util = layui.util
+			  ,laydate = layui.laydate
+			  ,layer = layui.layer
+			  ,laypage = layui.laypage
+			  ,form = layui.form;
+			  
+			//监听提交
+			  form.on('submit(register)', function(data){
+				  
+				  var telphone = data.field.telphone;
+				  var pwd = data.field.pwd;
+				  var code = data.field.code;
+				  var url = "/register";
+				  
+				 $.post(url,{"telphone":telphone,"pwd":pwd,"code":code},function(res){
+					  console.log(res);
+					  if(res.ret==0){
+						  layer.msg("注册成功");
+					  }else if(res.ret==2){
+						  layer.msg("该手机号已被注册");
+					  }else if(res.ret==3){
+						  layer.msg("验证码错误");
+					  }else if(res.ret==4){
+						  layer.msg("验证码过期");
+					  }else if(res.ret==1){
+						  layer.msg("注册失败");
+					  }
+				  }); 
+				  
+				  return false;
+				 
+			  });
+			
+			  
+		});
+		
+		/* 发送注册验证码 */
+		function sendRegisterCode(){
+			 var telphone = $("#telphone").val();
+			  var url = "/sendRegisterCode";
+			  
+			  $.post(url,{"telphone":telphone},function(res){
+				  //console.log(res);
+				  //返回结果 0-发送失败 ，1-发送成功				  
+				  if(res.ret==0){
+					  layer.msg("发送成功");
+				  }else if(res.ret==1){
+					  layer.msg("发送失败");
+				  }
+				  
+			  });
+		}
+		
+	</script>
+	
+</head>
+<body>
+
+	<div class="layui-container">
+		<div class="layui-row" style="margin-top: 24%">
+			<div class="layui-col-xs12" style="text-align: center;font-size: 18px;">用户注册</div>
+		</div>
+		<div class="layui-row" >
+			<div class="layui-col-xs12" style="text-align: center;">
+				<form class="layui-form" ><!-- th:action="@{~/register/saveTelPhoneRegister}" -->
+					<div class="layui-form-item">
+					</div>
+					<div class="layui-form-item">
+					    <label class="layui-form-label">账号</label>
+					    <div class="layui-input-block ">
+					      <input type="text" id="telphone" name="telphone" lay-verify="name" autocomplete="off" placeholder="请输入手机" class="layui-input"></input>
+					    </div>
+					</div>
+					<div class="layui-form-item">
+					    <label class="layui-form-label">密码</label>
+					    <div class="layui-input-block">
+					      <input type="password" name="pwd" lay-verify="password" autocomplete="off" placeholder="请输入密码" class="layui-input"></input>
+					    </div>
+					</div>
+					<div class="layui-form-item">
+					    <label class="layui-form-label">验证码</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="code" lay-verify="code" autocomplete="off" placeholder="请输入验证码" class="layui-input"></input>
+					    </div>
+					</div>
+				    <div class="layui-form-item" style="text-align: left;">
+					    <div class="layui-input-block">
+					      <button class="layui-btn" lay-submit="" lay-filter="register" >立即注册</button>
+					    </div>
+					</div>
+				</form>  
+				<button class="layui-btn" onclick="sendRegisterCode();" >免费发送验证码</button>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

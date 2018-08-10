@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.DialogCacheEventDao" >
+  <resultMap id="BaseResultMap" type="com.yls.projects.robot.entity.DialogCacheEvent" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="action" property="action" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="VARCHAR" />
+    <result column="secretKey" property="secretKey" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.yls.projects.robot.entity.DialogCacheEventWithBLOBs" extends="BaseResultMap" >
+    <result column="update_before_data" property="updateBeforeData" jdbcType="LONGVARCHAR" />
+    <result column="update_data" property="updateData" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, action, cid, secretKey, create_by, create_date, update_by, update_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    update_before_data, update_data
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dialog_cache_event
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dialog_cache_event
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yls.projects.robot.entity.DialogCacheEventWithBLOBs" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into dialog_cache_event (id, action, cid, secretKey, create_by, 
+      create_date, update_by, update_date, 
+      update_before_data, update_data)
+    values (#{id,jdbcType=BIGINT}, #{action,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, #{secretKey,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{updateBeforeData,jdbcType=LONGVARCHAR}, #{updateData,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yls.projects.robot.entity.DialogCacheEventWithBLOBs" >
+    insert into dialog_cache_event
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="secretKey != null" >
+        secretKey,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="updateBeforeData != null" >
+        update_before_data,
+      </if>
+      <if test="updateData != null" >
+        update_data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=VARCHAR},
+      </if>
+      <if test="secretKey != null" >
+        #{secretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBeforeData != null" >
+        #{updateBeforeData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="updateData != null" >
+        #{updateData,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yls.projects.robot.entity.DialogCacheEventWithBLOBs" >
+    update dialog_cache_event
+    <set >
+      <if test="action != null" >
+        action = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=VARCHAR},
+      </if>
+      <if test="secretKey != null" >
+        secretKey = #{secretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBeforeData != null" >
+        update_before_data = #{updateBeforeData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="updateData != null" >
+        update_data = #{updateData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yls.projects.robot.entity.DialogCacheEventWithBLOBs" >
+    update dialog_cache_event
+    set action = #{action,jdbcType=VARCHAR},
+     	cid = #{cid,jdbcType=VARCHAR},
+     	secretKey = #{secretKey,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_before_data = #{updateBeforeData,jdbcType=LONGVARCHAR},
+      update_data = #{updateData,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yls.projects.robot.entity.DialogCacheEvent" >
+    update dialog_cache_event
+    set action = #{action,jdbcType=VARCHAR},
+    	 cid = #{cid,jdbcType=VARCHAR},
+    	 secretKey = #{secretKey,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+   <select id="list" resultMap="ResultMapWithBLOBs" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dialog_cache_event
+    order by id
+  </select>
+</mapper>

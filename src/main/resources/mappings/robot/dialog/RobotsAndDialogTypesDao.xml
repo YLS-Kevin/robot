@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.RobotsAndDialogTypesDao" >
+  <resultMap id="BaseResultMap" type="com.yls.projects.robot.entity.RobotsAndDialogTypes" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="VARCHAR" />
+    <result column="cid_m" property="cidM" jdbcType="VARCHAR" />
+    <result column="ctype" property="ctype" jdbcType="DECIMAL" />
+    <result column="id_dt" property="idDt" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, cid_m, ctype, id_dt, sort, create_by, create_date, update_by, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ROBOTS_AND_DIALOG_TYPES
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCidAndIdM" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ROBOTS_AND_DIALOG_TYPES
+    where cid = #{cid,jdbcType=VARCHAR} and cid_m = #{cidM,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ROBOTS_AND_DIALOG_TYPES
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yls.projects.robot.entity.RobotsAndDialogTypes" >
+    insert into ROBOTS_AND_DIALOG_TYPES (id, cid, cid_m, 
+      ctype, id_dt, sort, 
+      create_by, create_date, update_by, 
+      update_date)
+    values (#{id,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, #{cidM,jdbcType=VARCHAR}, 
+      #{ctype,jdbcType=DECIMAL}, #{idDt,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yls.projects.robot.entity.RobotsAndDialogTypes" >
+    insert into ROBOTS_AND_DIALOG_TYPES
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="cidM != null" >
+        cid_m,
+      </if>
+      <if test="ctype != null" >
+        ctype,
+      </if>
+      <if test="idDt != null" >
+        id_dt,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cidM != null" >
+        #{cidM,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null" >
+        #{ctype,jdbcType=DECIMAL},
+      </if>
+      <if test="idDt != null" >
+        #{idDt,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yls.projects.robot.entity.RobotsAndDialogTypes" >
+    update ROBOTS_AND_DIALOG_TYPES
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cidM != null" >
+        cid_m = #{cidM,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null" >
+        ctype = #{ctype,jdbcType=DECIMAL},
+      </if>
+      <if test="idDt != null" >
+        id_dt = #{idDt,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByCidAndIdM" parameterType="com.yls.projects.robot.entity.RobotsAndDialogTypes" >
+    update ROBOTS_AND_DIALOG_TYPES
+    <set >
+      <if test="ctype != null" >
+        ctype = #{ctype,jdbcType=DECIMAL},
+      </if>
+      <if test="idDt != null" >
+        id_dt = #{idDt,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=VARCHAR} and cid_m = #{cidM,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yls.projects.robot.entity.RobotsAndDialogTypes" >
+    update ROBOTS_AND_DIALOG_TYPES
+    set cid = #{cid,jdbcType=VARCHAR},
+      cid_m = #{cidM,jdbcType=VARCHAR},
+      ctype = #{ctype,jdbcType=DECIMAL},
+      id_dt = #{idDt,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getAbilitys" resultType="com.yls.projects.robot.entity.RobotsAndDialogTypes" parameterType="com.yls.projects.robot.vo.RobotsVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from ROBOTS_AND_DIALOG_TYPES
+    where cid = #{cid,jdbcType=VARCHAR} and cid_m = #{idM,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getCountByDialogId" resultType="java.lang.Integer">
+	  SELECT COUNT(*) FROM ROBOTS_AND_DIALOG_TYPES 
+	  WHERE find_in_set(#{dialogId, jdbcType=VARCHAR}, id_dt);
+  </select>
+  
+</mapper>

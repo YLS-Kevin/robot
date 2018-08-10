@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.DialogManDao">
+
+	<!-- 添加人说表 -->
+  	<insert id="insert" parameterType="com.yls.projects.robot.entity.DialogMan">
+    insert into DIALOG_MAN (id, id_ac, id_d, 
+      aptype, aword, awordnum, 
+      aword1type, aword1, aword1near, 
+      aword1dyna, aword1para, aword2type, 
+      aword2, aword2near, aword2dyna, 
+      aword2para, aword3type, aword3, 
+      aword3near, aword3dyna, aword3para, 
+      aword4type, aword4, aword4near, 
+      aword4dyna, aword4para, aword5type, 
+      aword5, aword5near, aword5dyna, 
+      aword5para, sort, create_by, 
+      create_date, update_by, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{idAc,jdbcType=VARCHAR}, #{idD,jdbcType=VARCHAR}, 
+      #{aptype,jdbcType=DECIMAL}, #{aword,jdbcType=VARCHAR}, #{awordnum,jdbcType=DECIMAL}, 
+      #{aword1type,jdbcType=DECIMAL}, #{aword1,jdbcType=VARCHAR}, #{aword1near,jdbcType=VARCHAR}, 
+      #{aword1dyna,jdbcType=VARCHAR}, #{aword1para,jdbcType=VARCHAR}, #{aword2type,jdbcType=DECIMAL}, 
+      #{aword2,jdbcType=VARCHAR}, #{aword2near,jdbcType=VARCHAR}, #{aword2dyna,jdbcType=VARCHAR}, 
+      #{aword2para,jdbcType=VARCHAR}, #{aword3type,jdbcType=DECIMAL}, #{aword3,jdbcType=VARCHAR}, 
+      #{aword3near,jdbcType=VARCHAR}, #{aword3dyna,jdbcType=VARCHAR}, #{aword3para,jdbcType=VARCHAR}, 
+      #{aword4type,jdbcType=DECIMAL}, #{aword4,jdbcType=VARCHAR}, #{aword4near,jdbcType=VARCHAR}, 
+      #{aword4dyna,jdbcType=VARCHAR}, #{aword4para,jdbcType=VARCHAR}, #{aword5type,jdbcType=DECIMAL}, 
+      #{aword5,jdbcType=VARCHAR}, #{aword5near,jdbcType=VARCHAR}, #{aword5dyna,jdbcType=VARCHAR}, 
+      #{aword5para,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+    </insert>
+    
+    <!-- 更新人说表 -->
+    <update id="update" parameterType="com.yls.projects.robot.entity.DialogMan">
+	    update DIALOG_MAN
+	    <set>
+	      <if test="idAc != null" >
+	        id_ac = #{idAc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="idD != null" >
+	        id_d = #{idD,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aptype != null" >
+	        aptype = #{aptype,jdbcType=DECIMAL},
+	      </if>
+	      <if test="aword != null" >
+	        aword = #{aword,jdbcType=VARCHAR},
+	      </if>
+	      <if test="awordnum != null" >
+	        awordnum = #{awordnum,jdbcType=DECIMAL},
+	      </if>
+	      <if test="aword1type != null" >
+	        aword1type = #{aword1type,jdbcType=DECIMAL},
+	      </if>
+	      <if test="aword1 != null" >
+	        aword1 = #{aword1,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword1near != null" >
+	        aword1near = #{aword1near,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword1dyna != null" >
+	        aword1dyna = #{aword1dyna,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword1para != null" >
+	        aword1para = #{aword1para,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword2type != null" >
+	        aword2type = #{aword2type,jdbcType=DECIMAL},
+	      </if>
+	      <if test="aword2 != null" >
+	        aword2 = #{aword2,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword2near != null" >
+	        aword2near = #{aword2near,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword2dyna != null" >
+	        aword2dyna = #{aword2dyna,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword2para != null" >
+	        aword2para = #{aword2para,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword3type != null" >
+	        aword3type = #{aword3type,jdbcType=DECIMAL},
+	      </if>
+	      <if test="aword3 != null" >
+	        aword3 = #{aword3,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword3near != null" >
+	        aword3near = #{aword3near,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword3dyna != null" >
+	        aword3dyna = #{aword3dyna,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword3para != null" >
+	        aword3para = #{aword3para,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword4type != null" >
+	        aword4type = #{aword4type,jdbcType=DECIMAL},
+	      </if>
+	      <if test="aword4 != null" >
+	        aword4 = #{aword4,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword4near != null" >
+	        aword4near = #{aword4near,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword4dyna != null" >
+	        aword4dyna = #{aword4dyna,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword4para != null" >
+	        aword4para = #{aword4para,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword5type != null" >
+	        aword5type = #{aword5type,jdbcType=DECIMAL},
+	      </if>
+	      <if test="aword5 != null" >
+	        aword5 = #{aword5,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword5near != null" >
+	        aword5near = #{aword5near,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword5dyna != null" >
+	        aword5dyna = #{aword5dyna,jdbcType=VARCHAR},
+	      </if>
+	      <if test="aword5para != null" >
+	        aword5para = #{aword5para,jdbcType=VARCHAR},
+	      </if>
+	      <if test="sort != null" >
+	        sort = #{sort,jdbcType=INTEGER},
+	      </if>
+	      <if test="createBy != null" >
+	        create_by = #{createBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createDate != null" >
+	        create_date = #{createDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateBy != null" >
+	        update_by = #{updateBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="updateDate != null" >
+	        update_date = #{updateDate,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=VARCHAR}
+	</update>
+    
+	<!-- 根据人机对话id获取对应数据 -->
+	<select id="getDialogManByIdD" parameterType="java.lang.String" resultType="com.yls.projects.robot.entity.DialogMan">
+		select * from DIALOG_MAN where id_d = #{dialogId}
+	</select>
+  
+  	<sql id="Base_Column_List" >
+	    id, id_ac, id_d, aptype, aword, awordnum, aword1type, aword1, aword1near, 
+	    aword1para, aword2type, aword2, aword2near, aword2para, aword3type, aword3, 
+	    aword3near, aword3para, aword4type, aword4, aword4near, aword4para, 
+	    aword5type, aword5, aword5near, aword5para, sort, create_by, create_date, 
+	    update_by, update_date,
+	    replace(replace(aword1dyna,'(&amp;',''),'&amp;)','')as 'aword1dyna', 
+	    replace(replace(aword2dyna,'(&amp;',''),'&amp;)','')as 'aword2dyna', 
+	    replace(replace(aword3dyna,'(&amp;',''),'&amp;)','')as 'aword3dyna', 
+	    replace(replace(aword4dyna,'(&amp;',''),'&amp;)','')as 'aword4dyna', 
+	    replace(replace(aword5dyna,'(&amp;',''),'&amp;)','')as 'aword5dyna'
+  	</sql>
+  
+	<!-- 根据人机对话id获取对应数据List -->
+	<select id="getListByIdD" resultType="com.yls.projects.robot.entity.DialogMan">
+	  	select  
+	  		 <include refid="Base_Column_List" />
+	  	from DIALOG_MAN where id_d = #{dialogId}
+	</select>
+
+	<delete id="deleteDialogManByDialogId" parameterType="java.lang.String">
+        delete from DIALOG_MAN where id_d = #{dialogId}
+    </delete>
+</mapper>

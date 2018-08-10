@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.DialogCacheMapper">
+
+	<select id="findDialogById" resultType="com.yls.projects.robot.entity.DialogMoreAndOne2">
+		select *
+		from (
+		select d.id
+		as id, d.id_ac as idAc, d.id_dt as idDt, d.atype as atype,
+		d.id_ap as
+		idAp, d.mul_dialog_type as mulDialogType, d.cid_m_id_dt AS cidMIdDt
+		from DIALOG d
+		where d.state = 1
+		) d_dmo
+		left join(
+		select dmo.id as dmoId,
+		dmo.tname
+		from DIALOG_MORE dmo
+		where dmo.state = 1
+		) dmo
+		on d_dmo.idAp =
+		dmo.dmoId
+		left join (
+		select dm.id_d as idD, dm.aptype, dm.aword,
+		dm.awordnum, dm.id as dmId,
+		aword1type, dm.aword1, aword1near,
+		aword1dyna, aword1para,
+		aword2type, dm.aword2, aword2near, aword2dyna,
+		aword2para,
+		aword3type, dm.aword3, aword3near, aword3dyna, aword3para,
+		aword4type, dm.aword4, aword4near, aword4dyna, aword4para,
+		aword5type,
+		dm.aword5, aword5near, aword5dyna, aword5para
+		from DIALOG_MAN dm
+		) dm
+		on
+		d_dmo.id = dm.idD
+		left join (
+		select drs.id_d, drs.answer, drs.id as
+		drsId
+		from DIALOG_ROBOT_STATIC drs
+		where drs.state = 1
+		) drs
+		on d_dmo.id =
+		drs.id_d
+		left join (
+		select dri.id_d, id.url, id.urltest, dri.id as
+		driId
+		from DIALOG_ROBOT_INTER dri
+		left join INTER_DATA id
+		on dri.id_di =
+		id.id
+		where id.state = 1
+		) dri_id
+		on d_dmo.id = dri_id.id_d
+		left join (
+		select das.id_d, das.atype as dasAtype, das.stype, das.repara,
+		das.sin,
+		das.sinword, das.scripts,
+		das.id as dasId
+		from
+		DIALOG_ANSWER_SCRIPT das
+		where das.state=1
+		) das
+		on d_dmo.id = das.id_d
+		where d_dmo.id = #{id_d}
+	</select>
+
+	<select id="findDialogExpById" resultType="com.yls.projects.robot.entity.DialogExp">
+		select id, skid, id_ac
+		as idAc, cid, stype, answer, state, sort, create_by as createBy,
+		create_date as createDate, update_by as updateBy, update_date as
+		updateDate
+		from DIALOG_ANSWER_EXP
+		where state = 1 and id = #{id};
+	</select>
+
+	<select id="findDialogByInterDataId" resultType="dialogMoreAndOne2">
+		select *
+		from (
+		select d.id
+		as id, d.id_ac as idAc, d.id_dt as idDt, d.atype as atype,
+		d.id_ap as
+		idAp, d.mul_dialog_type as mulDialogType, d.cid_m_id_dt AS cidMIdDt
+		from DIALOG d
+		where d.state = 1
+		) d_dmo
+		left join(
+		select dmo.id as dmoId,
+		dmo.tname
+		from DIALOG_MORE dmo
+		where dmo.state = 1
+		) dmo
+		on d_dmo.idAp =
+		dmo.dmoId
+		left join (
+		select dm.id_d as idD, dm.aptype, dm.aword,
+		dm.awordnum, dm.id as dmId,
+		aword1type, dm.aword1, aword1near,
+		aword1dyna, aword1para,
+		aword2type, dm.aword2, aword2near, aword2dyna,
+		aword2para,
+		aword3type, dm.aword3, aword3near, aword3dyna, aword3para,
+		aword4type, dm.aword4, aword4near, aword4dyna, aword4para,
+		aword5type,
+		dm.aword5, aword5near, aword5dyna, aword5para
+		from DIALOG_MAN dm
+		) dm
+		on
+		d_dmo.id = dm.idD
+		left join (
+		select drs.id_d, drs.answer, drs.id as
+		drsId
+		from DIALOG_ROBOT_STATIC drs
+		where drs.state = 1
+		) drs
+		on d_dmo.id =
+		drs.id_d
+		left join (
+		select dri.id_d, id.url, id.urltest, dri.id as
+		driId, id.id as idId
+		from DIALOG_ROBOT_INTER dri
+		left join INTER_DATA id
+		on dri.id_di =
+		id.id
+		where id.state = 1
+		) dri_id
+		on d_dmo.id = dri_id.id_d
+		left join (
+		select das.id_d, das.atype as dasAtype, das.stype, das.repara,
+		das.sin,
+		das.sinword, das.scripts,
+		das.id as dasId
+		from
+		DIALOG_ANSWER_SCRIPT das
+		where das.state=1
+		) das
+		on d_dmo.id = das.id_d
+		where dri_id.idId = #{id}
+	</select>
+
+</mapper>

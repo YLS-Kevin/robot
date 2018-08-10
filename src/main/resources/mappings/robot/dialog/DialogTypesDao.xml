@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.dialog.dao.DialogTypesDao">
+
+	<!-- 获取总数 -->
+	<select id="getCount" resultType="java.lang.Integer"
+		parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+		SELECT COUNT(id) FROM DIALOG_TYPES
+		WHERE is_share =
+		#{isShare,jdbcType=VARCHAR} and id_ac =
+		#{idAc,jdbcType=VARCHAR}
+		AND
+		del_flag='0' and (cid_m is null or cid_m = '')
+		<if test="atname != null and atname != ''">
+			and atname LIKE concat('%',#{atname},'%')
+		</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="dialogTypesList" resultType="java.util.Map"
+		parameterType="com.yls.projects.dialog.vo.DialogTypesVo">
+		SELECT id, atname, id_ac idAc,be_quoted beQuoted
+		,is_share isShare,state,sort
+		FROM DIALOG_TYPES
+		WHERE is_share =
+		#{isShare,jdbcType=VARCHAR} and id_ac =
+		#{idAc,jdbcType=VARCHAR}
+		AND
+		del_flag='0' and (cid_m is null or cid_m = '')
+		<if test="atname != null and atname != ''">
+			and atname LIKE concat('%',#{atname},'%')
+		</if>
+		order by atname
+		LIMIT
+		#{startIndex},#{size}
+	</select>
+	<!--新增对话 -->
+	<insert id="addDialogTypes">
+		INSERT INTO DIALOG_TYPES
+		(id,id_ac,cid_m,atname,be_quoted,is_share,sort,remarks,create_by,create_date,update_by,update_date,del_flag)
+		VALUES(#{id},#{idAc},#{cidM},#{atname},#{beQuoted},#{isShare},#{sort},#{remarks},#{createBy},#{createDate},#{updateBy},#{updateDate},#{delFlag})
+	</insert>
+	<!--物理删除，修改delFlag字段状态 -->
+	<update id="delDialogTypes">
+		UPDATE DIALOG_TYPES
+		SET del_flag=#{delFlag},
+		update_by
+		= #{updateBy},
+		update_date = #{updateDate}
+		WHERE
+		id=#{id,jdbcType=VARCHAR}
+	</update>
+
+	<!--修改 -->
+	<update id="updateDialogTypes">
+		UPDATE DIALOG_TYPES
+		<set>
+			<if test="atname != null">
+				atname = #{atname},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<!-- 根据对话库id查询对话库 -->
+	<select id="getById" resultType="com.yls.projects.dialog.entity.DialogTypes">
+		select * from DIALOG_TYPES where
+		id = #{id} and del_flag = '0'
+	</select>
+
+	<!-- 根据对话库id查询对话库 -->
+	<select id="getByCidM" resultType="com.yls.projects.dialog.entity.DialogTypes">
+		select * from DIALOG_TYPES
+		where
+		cid_m = #{cidM} and del_flag = '0'
+	</select>
+
+	<!-- 查出共享的能力并且自己账户的全部能力 -->
+	<select id="listShareAbility" resultType="com.yls.projects.dialog.entity.DialogTypes"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select * from DIALOG_TYPES where (is_share = '1' and
+		del_flag = '0' or (id_ac = #{idAc} and (cid_m is null or cid_m = '')  and del_flag = '0'))
+		<choose>
+			<when test="atname != null and atname != ''">
+				and atname LIKE concat('%',#{atname},'%')
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 根据对话库ids查询对话库 -->
+	<select id="listDialogTypeByIds" resultType="com.yls.projects.dialog.entity.DialogTypes">
+		select * from DIALOG_TYPES
+		where id in 
+		<foreach collection="ids" index="index" item="item"
+			separator="," open="(" close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</select>
+	
+	<!--修改 -->
+	<update id="shareDialogLibrary"  parameterType="com.yls.projects.dialog.entity.DialogTypes">
+		UPDATE DIALOG_TYPES
+        set is_share = #{isShare}
+		WHERE id=#{id}
+	</update>
+	
+	<select id="getCountByDialogLibraryName" resultType="java.lang.Integer" parameterType="com.yls.projects.dialog.entity.DialogTypes">
+    	select count(id) from DIALOG_TYPES where id_ac = #{idAc}
+    		and atname = #{atname} and del_flag = '0'
+    		<if test="id != null and id != ''">
+    		and id  &lt;&gt; #{id}
+    		</if>
+    </select>
+</mapper>

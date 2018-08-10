@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.DwordGroupDao" >
+	
+	<!-- 添加数据 -->
+	<insert id="insert" parameterType="com.yls.projects.robot.entity.DwordGroup" >
+    insert into DWORDGROUP (id, id_ac, group_name, 
+      group_cn_name, is_share, is_default, state, 
+      sort, remarks, create_by, 
+      create_date, update_by, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{idAc,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, 
+      #{groupCnName,jdbcType=VARCHAR}, #{isShare,jdbcType=CHAR}, #{isDefault,jdbcType=CHAR}, #{state,jdbcType=DECIMAL}, 
+      #{sort,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  	</insert>
+  	
+  	<!-- 更新数据 -->
+  	<update id="update" parameterType="com.yls.projects.robot.entity.DwordGroup" >
+    update DWORDGROUP
+    <set >
+      <if test="idAc != null" >
+        id_ac = #{idAc,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupCnName != null" >
+        group_cn_name = #{groupCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="isShare != null" >
+        is_share = #{isShare,jdbcType=CHAR},
+      </if>
+       <if test="isDefault != null" >
+        is_default = #{isDefault,jdbcType=CHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+    </update>
+	
+ 	<!-- 根据账号Id查询列表 -->
+    <select id="getListByIdAc" resultType="com.yls.projects.robot.entity.DwordGroup" parameterType="com.yls.projects.robot.vo.DwordGroupVo">
+    	select * from DWORDGROUP where (id_ac = #{idAc} or id_ac = '1')
+    	<if test="groupName != null and groupName != ''">
+    		and group_cn_name like concat('%',#{groupName},'%')
+    	</if>
+    	order by is_default, update_date desc
+    	limit #{startIndex},#{size}
+    </select>
+    
+    <!-- 获取总数 -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.vo.DwordGroupVo">
+    	select count(id) from DWORDGROUP where (id_ac = #{idAc} or id_ac = '1')
+    	<if test="groupName != null and groupName != ''">
+    		and group_cn_name like concat('%',#{groupName},'%')
+    	</if>
+    </select>
+    
+    <!-- 删除数据 -->
+    <delete id="delete" parameterType="com.yls.projects.robot.entity.DwordGroup">
+	    delete from DWORDGROUP where id = #{id}
+    </delete>
+    
+    <select id="getCountByName" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.vo.DwordGroupVo">
+    	select count(id) from DWORDGROUP where (id_ac = #{idAc} or id_ac = '1')
+    		and group_name = #{groupName}
+    		<if test="id != null and id != ''">
+    		and id  &lt;&gt; #{id}
+    	</if>
+    </select>
+    
+    <select id="getCountByCnName" resultType="java.lang.Integer" parameterType="com.yls.projects.robot.vo.DwordGroupVo">
+    	select count(id) from DWORDGROUP where (id_ac = #{idAc} or id_ac = '1')
+    		and group_cn_name = #{groupCnName}
+    		<if test="id != null and id != ''">
+    		and id  &lt;&gt; #{id}
+    	</if>
+    </select>
+
+</mapper>

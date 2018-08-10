@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.DialogAnswerExpDao" >
+  <resultMap id="BaseResultMap" type="com.yls.projects.robot.entity.DialogAnswerExp" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="skid" property="skid" jdbcType="DECIMAL" />
+    <result column="id_ac" property="idAc" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="VARCHAR" />
+    <result column="stype" property="stype" jdbcType="DECIMAL" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="DECIMAL" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, skid, id_ac, cid, stype, answer, state, sort, create_by, create_date, update_by, 
+    update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from DIALOG_ANSWER_EXP
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from DIALOG_ANSWER_EXP
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yls.projects.robot.entity.DialogAnswerExp" >
+    insert into DIALOG_ANSWER_EXP (id, skid, id_ac, 
+      cid, stype, answer, 
+      state, sort, create_by, 
+      create_date, update_by, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{skid,jdbcType=DECIMAL}, #{idAc,jdbcType=VARCHAR}, 
+      #{cid,jdbcType=VARCHAR}, #{stype,jdbcType=DECIMAL}, #{answer,jdbcType=VARCHAR}, 
+      #{state,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yls.projects.robot.entity.DialogAnswerExp" >
+    insert into DIALOG_ANSWER_EXP
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="skid != null" >
+        skid,
+      </if>
+      <if test="idAc != null" >
+        id_ac,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="stype != null" >
+        stype,
+      </if>
+      <if test="answer != null" >
+        answer,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="skid != null" >
+        #{skid,jdbcType=DECIMAL},
+      </if>
+      <if test="idAc != null" >
+        #{idAc,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=VARCHAR},
+      </if>
+      <if test="stype != null" >
+        #{stype,jdbcType=DECIMAL},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yls.projects.robot.entity.DialogAnswerExp" >
+    update DIALOG_ANSWER_EXP
+    <set >
+      <if test="skid != null" >
+        skid = #{skid,jdbcType=DECIMAL},
+      </if>
+      <if test="idAc != null" >
+        id_ac = #{idAc,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=VARCHAR},
+      </if>
+      <if test="stype != null" >
+        stype = #{stype,jdbcType=DECIMAL},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByCidAndStype" parameterType="com.yls.projects.robot.entity.DialogAnswerExp" >
+    update DIALOG_ANSWER_EXP
+    <set >
+      <if test="skid != null" >
+        skid = #{skid,jdbcType=DECIMAL},
+      </if>
+      <if test="idAc != null" >
+        id_ac = #{idAc,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=VARCHAR} and stype = #{stype,jdbcType=DECIMAL}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.yls.projects.robot.entity.DialogAnswerExp" >
+    update DIALOG_ANSWER_EXP
+    set skid = #{skid,jdbcType=DECIMAL},
+      id_ac = #{idAc,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=VARCHAR},
+      stype = #{stype,jdbcType=DECIMAL},
+      answer = #{answer,jdbcType=VARCHAR},
+      state = #{state,jdbcType=DECIMAL},
+      sort = #{sort,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getAnswerExpByRobotId" resultType="com.yls.projects.robot.entity.DialogAnswerExp" parameterType="com.yls.projects.robot.vo.RobotsVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from DIALOG_ANSWER_EXP
+    where cid = #{cid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="listAnswerExpByRobotIdAndStype" resultType="com.yls.projects.robot.entity.DialogAnswerExp" parameterType="com.yls.projects.robot.vo.RobotsVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from DIALOG_ANSWER_EXP
+    where cid = #{cid,jdbcType=VARCHAR} and stype = #{stype,jdbcType=VARCHAR}
+  </select>
+</mapper>

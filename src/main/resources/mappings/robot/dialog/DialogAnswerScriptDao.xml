@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.DialogAnswerScriptDao" >
+    
+    <!-- 根据对话id获取对应脚本数据 -->
+    <select id="getDialogAnswerScriptByIdD" parameterType="java.lang.String" resultType="com.yls.projects.robot.entity.DialogAnswerScript">
+    	select * from DIALOG_ANSWER_SCRIPT where state = 1 and id_d = #{dialogId}
+    </select>
+    
+    <!-- 插入数据  -->
+    <insert id="insert" parameterType="com.yls.projects.robot.entity.DialogAnswerScript" >
+    insert into DIALOG_ANSWER_SCRIPT (id, id_ac, id_d, 
+      atype, stype, repara, 
+      sin, sinword, scripts, 
+      state, sort, create_by, 
+      create_date, update_by, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{idAc,jdbcType=VARCHAR}, #{idD,jdbcType=VARCHAR}, 
+      #{atype,jdbcType=DECIMAL}, #{stype,jdbcType=DECIMAL}, #{repara,jdbcType=VARCHAR}, 
+      #{sin,jdbcType=DECIMAL}, #{sinword,jdbcType=VARCHAR}, #{scripts,jdbcType=VARCHAR}, 
+      #{state,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  	</insert>
+  	
+  	<!-- 更新数据 -->
+  	<update id="update" parameterType="com.yls.projects.robot.entity.DialogAnswerScript" >
+	    update DIALOG_ANSWER_SCRIPT
+	    <set >
+	      <if test="idAc != null" >
+	        id_ac = #{idAc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="idD != null" >
+	        id_d = #{idD,jdbcType=VARCHAR},
+	      </if>
+	      <if test="atype != null" >
+	        atype = #{atype,jdbcType=DECIMAL},
+	      </if>
+	      <if test="stype != null" >
+	        stype = #{stype,jdbcType=DECIMAL},
+	      </if>
+	      <if test="repara != null" >
+	        repara = #{repara,jdbcType=VARCHAR},
+	      </if>
+	      <if test="sin != null" >
+	        sin = #{sin,jdbcType=DECIMAL},
+	      </if>
+	      <if test="sinword != null" >
+	        sinword = #{sinword,jdbcType=VARCHAR},
+	      </if>
+	      <if test="scripts != null" >
+	        scripts = #{scripts,jdbcType=VARCHAR},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state,jdbcType=DECIMAL},
+	      </if>
+	      <if test="sort != null" >
+	        sort = #{sort,jdbcType=INTEGER},
+	      </if>
+	      <if test="createBy != null" >
+	        create_by = #{createBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createDate != null" >
+	        create_date = #{createDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateBy != null" >
+	        update_by = #{updateBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="updateDate != null" >
+	        update_date = #{updateDate,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  
+  <!-- 根据人机对话ID查询详情List -->
+  <select id="getListByIdD" resultType="com.yls.projects.robot.entity.DialogAnswerScript">
+  	select * from DIALOG_ANSWER_SCRIPT where id_d = #{dialogId}
+  </select>
+  
+  <!-- 删除数据 -->
+  <delete id="delete">
+    delete from DIALOG_ANSWER_SCRIPT
+    where id_d = #{dialogId}
+  </delete>
+  
+</mapper>

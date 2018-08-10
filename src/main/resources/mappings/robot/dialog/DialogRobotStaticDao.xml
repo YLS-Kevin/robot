@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.DialogRobotStaticDao">
+
+	<!-- 插入数据 -->
+    <insert id="insert" parameterType="com.yls.projects.robot.entity.DialogRobotStatic">
+	    insert into DIALOG_ROBOT_STATIC (id, id_ac, id_d, 
+	      answer, state, sort, 
+	      create_by, create_date, update_by, 
+	      update_date)
+	    values (#{id,jdbcType=VARCHAR}, #{idAc,jdbcType=VARCHAR}, #{idD,jdbcType=VARCHAR}, 
+	      #{answer,jdbcType=VARCHAR}, #{state,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER}, 
+	      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+	      #{updateDate,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<!-- 更新数据  -->
+	<update id="update" parameterType="com.yls.projects.robot.entity.DialogRobotStatic">
+	    update DIALOG_ROBOT_STATIC
+	    <set >
+	      <if test="idAc != null" >
+	        id_ac = #{idAc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="idD != null" >
+	        id_d = #{idD,jdbcType=VARCHAR},
+	      </if>
+	      <if test="answer != null" >
+	        answer = #{answer,jdbcType=VARCHAR},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state,jdbcType=DECIMAL},
+	      </if>
+	      <if test="sort != null" >
+	        sort = #{sort,jdbcType=INTEGER},
+	      </if>
+	      <if test="createBy != null" >
+	        create_by = #{createBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createDate != null" >
+	        create_date = #{createDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateBy != null" >
+	        update_by = #{updateBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="updateDate != null" >
+	        update_date = #{updateDate,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=VARCHAR}
+	</update>
+    
+    <!-- 根据对话id获取对应数据 -->
+    <select id="getDialogRobotStaticByIdD" parameterType="java.lang.String" resultType="com.yls.projects.robot.entity.DialogRobotStatic">
+    	select * from DIALOG_ROBOT_STATIC where state = 1 and id_d = #{dialogId}
+    </select>
+    
+    <!-- 删除固定应答的记录通过对话id -->
+    <delete id="deleteByDialogId">
+        delete from DIALOG_ROBOT_STATIC where id_d = #{dialogId}
+    </delete>
+  
+</mapper>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.RobotsModuleDao">
+	<resultMap id="BaseResultMap" type="com.yls.projects.robot.entity.RobotsModule">
+		<id column="cid_m" property="cidM" jdbcType="VARCHAR" />
+		<result column="cid" property="cid" jdbcType="VARCHAR" />
+		<result column="iscommon" property="iscommon" jdbcType="DECIMAL" />
+		<result column="mname" property="mname" jdbcType="VARCHAR" />
+		<result column="dokey" property="dokey" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="CHAR" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+		<result column="create_by" property="createBy" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		cid_m, cid, iscommon, mname, dokey, state, sort, remarks,
+		create_by,
+		create_date,
+		update_by, update_date
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from robots_module
+		where cid_m = #{cidM,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		robots_module
+		where cid_m = #{cidM,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.yls.projects.robot.entity.RobotsModule">
+		insert into robots_module
+		(cid_m, cid, iscommon,
+		mname, dokey, del_flag, state, sort,
+		remarks, create_by,
+		create_date,
+		update_by, update_date)
+		values (#{cidM,jdbcType=VARCHAR},
+		#{cid,jdbcType=VARCHAR},
+		#{iscommon,jdbcType=DECIMAL},
+		#{mname,jdbcType=VARCHAR}, #{dokey,jdbcType=VARCHAR},
+		#{delFlag,jdbcType=CHAR},
+		#{state,jdbcType=CHAR},
+		#{sort,jdbcType=INTEGER},
+		#{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+		#{createDate,jdbcType=TIMESTAMP},
+		#{updateBy,jdbcType=VARCHAR},
+		#{updateDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.yls.projects.robot.entity.RobotsModule">
+		insert into robots_module
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cidM != null">
+				cid_m,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="iscommon != null">
+				iscommon,
+			</if>
+			<if test="mname != null">
+				mname,
+			</if>
+			<if test="dokey != null">
+				dokey,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="cidM != null">
+				#{cidM,jdbcType=VARCHAR},
+			</if>
+			<if test="cid != null">
+				#{cid,jdbcType=VARCHAR},
+			</if>
+			<if test="iscommon != null">
+				#{iscommon,jdbcType=DECIMAL},
+			</if>
+			<if test="mname != null">
+				#{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="dokey != null">
+				#{dokey,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=CHAR},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yls.projects.robot.entity.RobotsModule">
+		update robots_module
+		<set>
+			<if test="cid != null">
+				cid = #{cid,jdbcType=VARCHAR},
+			</if>
+			<if test="iscommon != null">
+				iscommon = #{iscommon,jdbcType=DECIMAL},
+			</if>
+			<if test="mname != null">
+				mname = #{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="dokey != null">
+				dokey = #{dokey,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=CHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=CHAR},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where cid_m = #{cidM,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yls.projects.robot.entity.RobotsModule">
+		update
+		robots_module
+		set cid = #{cid,jdbcType=VARCHAR},
+		iscommon =
+		#{iscommon,jdbcType=DECIMAL},
+		mname = #{mname,jdbcType=VARCHAR},
+		dokey =
+		#{dokey,jdbcType=VARCHAR},
+		state = #{state,jdbcType=CHAR},
+		sort =
+		#{sort,jdbcType=INTEGER},
+		remarks = #{remarks,jdbcType=VARCHAR},
+		create_by = #{createBy,jdbcType=VARCHAR},
+		create_date =
+		#{createDate,jdbcType=TIMESTAMP},
+		update_by =
+		#{updateBy,jdbcType=VARCHAR},
+		update_date =
+		#{updateDate,jdbcType=TIMESTAMP}
+		where cid_m = #{cidM,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getRobotInfoByIdAndMid" resultType="com.yls.projects.robot.entity.RobotsModule"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select a.cid_m, a.cid, a.iscommon, a.mname, a.dokey, a.state, a.sort, a.remarks,
+		a.create_by, a.create_date, a.update_by, a.update_date, b.id as idDts
+		from robots_module a
+   	 	INNER JOIN DIALOG_TYPES b ON a.cid_m = b.cid_m
+		where a.cid = #{cid,jdbcType=VARCHAR} 
+		and a.del_flag = '0'
+	</select>
+	
+	<select id="getDialogIdByIdAndMid" resultType="com.yls.projects.robot.entity.RobotsModule"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select a.cid_m, a.cid, a.iscommon, a.mname, a.dokey, a.state, a.sort, a.remarks,
+		a.create_by, a.create_date, a.update_by, a.update_date, b.id as idDts, c.id AS dialogId
+		from robots_module a
+   	 	INNER JOIN DIALOG_TYPES b ON a.cid_m = b.cid_m
+   	 	LEFT JOIN DIALOG c on c.id_dt = b.id
+		where a.cid = #{cid,jdbcType=VARCHAR} and a.cid_m = #{idM,jdbcType=VARCHAR} and c.cid_m_id_dt &lt;&gt; '' and c.cid_m_id_dt is not null
+		and a.del_flag = '0'
+	</select>
+	
+	<select id="getRobotModelById" resultType="com.yls.projects.robot.entity.RobotsModule"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select
+		<include refid="Base_Column_List" />
+		from robots_module
+		where cid_m = #{idM,jdbcType=VARCHAR}
+	</select>
+	
+	
+	
+	<select id="getCountByCidMname" resultType="java.lang.Integer"
+		parameterType="com.yls.projects.robot.vo.RobotsVo">
+		select COUNT(a.cid_m)
+		from robots_module a
+		where a.del_flag = '0'  and a.mname = #{mname,jdbcType=VARCHAR}
+		<if test="cid != null and cid != ''">
+    		and a.cid = #{cid,jdbcType=VARCHAR}
+    	</if>
+		<if test="idM != null and idM != ''">
+    		and a.cid_m  &lt;&gt; #{idM}
+    	</if>
+	</select>
+</mapper>

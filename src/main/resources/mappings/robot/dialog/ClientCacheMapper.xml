@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.ClientCacheMapper">
+
+	<select id="findDialogTypeById" resultType="com.yls.projects.robot.entity.DialogType2">
+	select id, cid, cid_m AS cidM, ctype, id_dt as idDt, sort, create_by as createBy, update_by as updateBy  from ROBOTS_AND_DIALOG_TYPES radt
+	where radt.cid = #{cid} and radt.cid_m = #{idM}
+	</select>
+
+</mapper>

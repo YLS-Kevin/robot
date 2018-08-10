@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yls.projects.robot.dao.DialogRobotInterDao" >
+  
+  	<!-- 添加接口应答表 -->
+    <insert id="insert">
+		INSERT INTO DIALOG_ROBOT_INTER(
+			id,
+			id_ac,
+			id_d,
+			id_di,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		)VALUES(
+			#{id},
+			#{idAc},
+			#{idD},
+			#{idDi},
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate}
+		)
+    </insert>
+    
+    <!-- 更新接口应答表 -->
+    <update id="update">
+		UPDATE DIALOG_ROBOT_INTER
+		<set>
+      		<if test="idAc != null" > 	
+				id_ac = #{idAc},
+			</if>
+			<if test="idD != null" > 	
+				id_d = #{idD},
+			</if>
+			<if test="idDi != null" > 	
+				id_di = #{idDi},
+			</if>
+			<if test="createBy != null" > 	
+				create_by = #{createBy},
+			</if>
+			<if test="updateBy != null" > 	
+				update_by = #{updateBy},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 根据人机对话Id查询详情List -->
+    <select id="getListByIdD" resultType="com.yls.projects.robot.entity.DialogRobotInter">
+	    select a.*, b.explains as explains, b.url as url, b.param_name AS paramName
+		from DIALOG_ROBOT_INTER a
+		INNER JOIN INTER_DATA b on a.id_di = b.id
+		where id_d = #{dialogId}
+    </select>
+</mapper>

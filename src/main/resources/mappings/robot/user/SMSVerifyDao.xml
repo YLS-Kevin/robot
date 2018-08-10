@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yls.projects.robot.dao.SMSVerifyDao">
+
+	<!-- 根据手机号查找短信验证信息 -->
+	<select id="getByTelPhone" resultType="SMSVerify">
+		select * from sms_verify where telphone = #{telphone}
+	</select>
+
+	<!-- 保存短信验证信息 -->
+    <insert id="save">
+    	REPLACE INTO sms_verify(telphone,code,create_date)values(#{telphone},#{code},NOW())
+    </insert>
+
+
+</mapper>
